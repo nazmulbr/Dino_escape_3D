@@ -5,6 +5,7 @@ import math
 import random
 
 
+
 # Dino position
 dino_x, dino_y, dino_z = 0, 0, 0
 
@@ -15,7 +16,7 @@ enemy_hit_count = 0
 dino_speed = 1.0
 dino_speed = 1.0 + 0.1 * gem_count
 game_state = "running"
-portal_x, portal_z = 0, -200
+portal_x, portal_y, portal_z = 0, 0, -200
 hit_count = 0
 MAX_HITS = 5
 
@@ -30,6 +31,7 @@ gravity = -0.25
 jump_start_velocity = 6.5
 max_fall_speed = -0.1
 
+game_won = False
 # asteroids
 asteroids = [
     {'x': random.randint(-200, 100), 'y': 200, 'z': 0,
@@ -87,14 +89,14 @@ def draw_ui():
     ui_z = dino_z - 15
 
     glTranslatef(ui_x, ui_y, ui_z)
-    glRotatef(180, 0, 1, 0)
+    glRotatef(360, 0, 1, 0)
     glScalef(0.08, 0.08, 0.08)
 
     # UI text content
     status = f"Gems: {gem_count}  Hits: {int(dino_hit_count)}  Speed: {speed_multiplier:.1f}"
 
     for char in status:
-        glutStrokeCharacter(GLUT_STROKE_TIMES_ROMAN_24, ord(char))
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, ord(char))
 
     glPopMatrix()
 
@@ -103,6 +105,7 @@ def draw_ui():
 def draw_end_portal():
     glPushMatrix()
     glTranslatef(portal_x, 5, portal_z)
+    
     glColor3f(0.3, 0.7, 1.0)  # Light blue glowing color
     glutSolidTorus(1, 6, 20, 40)
     glPopMatrix()
@@ -390,15 +393,15 @@ def draw_lasers():
         glPopMatrix()
 
 
-def check_enemy_collision():
-    global dino_hit_count, dino_alive
-    for enemy in enemies:
-        dist = math.sqrt((dino_x - enemy['x'])**2 + (dino_z - enemy['z'])**2)
-        if dist < 10:
-            dino_hit_count += 1
-            if dino_hit_count >= 5:
-                dino_alive = False
-            return
+# def check_enemy_collision():
+#     global dino_hit_count, dino_alive
+#     for enemy in enemies:
+#         dist = math.sqrt((dino_x - enemy['x'])**2 + (dino_z - enemy['z'])**2)
+#         if dist < 10:
+#             dino_hit_count += 1
+#             if dino_hit_count >= 5:
+#                 dino_alive = False
+#             return
 
 
 def draw_pits():
@@ -550,7 +553,7 @@ def showScreen():
     draw_pits()
     draw_enemies()
     update_enemies()
-    check_enemy_collision()
+    # check_enemy_collision()
     update_lasers()
     draw_lasers()
     check_collision()
@@ -575,14 +578,14 @@ def showScreen():
 
 
 def keyboardListener(key, x, y):
-    global dino_x, dino_z, is_jumping, jump_velocity, dino_facing_left
+    global dino_x, dino_z, is_jumping, jump_velocity, dino_facing_left, game_won 
     if key == b'r':
         restart_game()
         return
-    if not dino_alive:
+    if not dino_alive or game_won:
         return
-    min_x, max_x = -165, 170
-    min_z, max_z = -165, 170
+    min_x, max_x = -165, 165
+    min_z, max_z = -200 ,200
     if key == b'a':
         dino_x -= move_step
         dino_facing_left = True
