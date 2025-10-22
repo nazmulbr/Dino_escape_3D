@@ -1,0 +1,28 @@
+# 🧰 Software & Programming Tools Required for Dino Escape
+
+1. **Python 3.8 or newer** – the main programming language  
+   Download: https://www.python.org/downloads/
+
+2. **Python Libraries**
+   Install using pip:
+   ```bash
+   pip install PyOpenGL PyOpenGL_accelerate numpy
+   ```
+
+3. **GLUT / FreeGLUT** – for window and rendering support  
+   - Windows: included with PyOpenGL  
+   - macOS: `brew install freeglut`  
+   - Linux: `sudo apt install freeglut3-dev`  
+
+4. **Code Editor / IDE**
+   - Visual Studio Code  
+   - PyCharm  
+   - Sublime Text  
+   - IDLE (default Python editor)
+
+5. **Git** – for version control and GitHub upload  
+   Download: https://git-scm.com/downloads
+
+6. **Optional Tools**
+   - XAMPP / Terminal / Command Prompt – to run commands easily  
+   - GPU with OpenGL 2.1+ support – for smooth 3D rendering
